@@ -1,6 +1,8 @@
 import os
 from authx import AuthX, AuthXConfig
 from datetime import timedelta
+from dotenv import load_dotenv
+
 
 
 def get_security() -> AuthX:
