@@ -8,7 +8,14 @@ import asyncio
 
 load_dotenv()
 
-DB_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://user:password@db:5432/finance_db")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST", "db")
+DB_PORT = os.getenv("DB_PORT", "5432")
+DB_NAME = os.getenv("DB_NAME")
+
+DB_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
 
 
 engine = create_async_engine(DB_URL, echo=True)

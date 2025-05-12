@@ -17,11 +17,7 @@ app.include_router(
     tags=["Transactions"]
 )
 
-@app.on_event("startup")
-async def on_startup():
-    await init_db()
 
-security = get_security()
 
 @app.get("/", tags=["Root"])
 async def root():
