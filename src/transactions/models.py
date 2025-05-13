@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
 from src.database import Base
+from sqlalchemy.ext.declarative import declarative_base
+
 
 class Transaction(Base):
     __tablename__ = 'transactions'
@@ -10,4 +12,3 @@ class Transaction(Base):
     date = Column(DateTime)
     type = Column(String)
     description = Column(String, nullable=True)
-

@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
 from src.database import Base
+from sqlalchemy.ext.declarative import declarative_base
+
 
 class User(Base):
     __tablename__ = 'users'
@@ -7,4 +9,3 @@ class User(Base):
     username = Column(String,unique=True)
     email = Column(String,unique=True)
     hashed_password = Column(String)
-
