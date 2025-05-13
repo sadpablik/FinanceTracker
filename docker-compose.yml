@@ -1,36 +1,37 @@
-version: "3.8"
+version: '3.8'
 
 services:
   db:
-    image: postgres:13
-    container_name: postgres_db
+    container_name: postgres-db
+    image: postgres:15-alpine
+    restart: always
+    env_file: ./.env
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: finance_db
+      - POSTGRES_DB=finance_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  app:
+  backend:
+    container_name: finance-backend
     build: .
-    container_name: fastapi_app
+    env_file: ./.env
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
     ports:
       - "8000:8000"
-    environment:
-      - DATABASE_URL=postgresql+asyncpg://postgres:password@db:5432/finance_db
     depends_on:
-      - db
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    driver: bridge
+      db:
+        condition: service_healthy
+    restart: unless-stopped
 
 volumes:
   postgres_data:
-    driver: local
