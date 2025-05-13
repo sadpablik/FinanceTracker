@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from .models import Transaction
-from .schemas import TransactionCreate
+from src.transactions.models import Transaction
+from src.transactions.schemas import TransactionCreate
 from ..database import get_db
+from sqlalchemy.ext.declarative import declarative_base
 
 router = APIRouter(
     prefix="/transactions",
